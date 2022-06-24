@@ -9,12 +9,9 @@ public:
         }
         
         for(int val : nums2){
-            if(mapka.find(val) != mapka.end()){
+            if(mapka[val] > 0){
                 ans.push_back(val);
-                mapka[val]--;
-                
-                if(mapka[val] == 0)
-                    mapka.erase(val);
+                mapka[val]--;  
             }
         }
         
