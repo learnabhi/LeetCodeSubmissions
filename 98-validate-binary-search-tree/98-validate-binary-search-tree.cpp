@@ -11,16 +11,25 @@
  */
 class Solution {
 public:
-    bool isValid(TreeNode* root, long minn , long maxx){
-        if(!root) return true;
-        
-        if(root->val <= minn || root->val >= maxx) return false;
-        
-        return isValid(root->left, minn, root->val) && isValid(root->right, root->val, maxx);
-    }
     bool isValidBST(TreeNode* root) {
         if(!root) return true;
         
-        return isValid(root, LONG_MIN, LONG_MAX);
+        stack<TreeNode*> st;
+        TreeNode* prev = NULL , *curr = root;
+        
+        while(curr || !st.empty()){
+            while(curr){
+                st.push(curr);
+                curr = curr->left;
+            }
+            curr = st.top(); st.pop();
+            if(prev && prev->val >= curr->val) return false;
+            
+            prev = curr;
+            curr = curr->right;
+        }
+        
+        return true;
+        
     }
 };
