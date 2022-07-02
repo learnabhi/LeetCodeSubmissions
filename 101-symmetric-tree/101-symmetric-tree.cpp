@@ -11,14 +11,30 @@
  */
 class Solution {
 public:
-    bool isSymmetric(TreeNode* root1, TreeNode* root2){
-        if(!root1 && !root2) return true;
-        else if(!root1 || !root2) return false;
-        
-        return root1->val == root2->val && isSymmetric(root1->left, root2->right) && isSymmetric(root1->right, root2->left);
-    }
     bool isSymmetric(TreeNode* root) {
         if(!root) return true;
-        return isSymmetric(root, root);
+        
+        queue<TreeNode*> q;
+        q.push(root->left);
+        q.push(root->right);
+        
+        while(!q.empty()){
+            TreeNode* first = q.front();q.pop();
+            TreeNode* second = q.front();q.pop();
+            
+            if(!first && !second) continue;
+            
+            if(!first && second) return false;
+            else if(first && !second) return false;
+            else{
+                if(first->val != second->val) return false;
+                q.push(first->left);
+                q.push(second->right);
+                
+                q.push(first->right);
+                q.push(second->left);
+            }
+        }
+        return true;
     }
 };
