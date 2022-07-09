@@ -1,34 +1,48 @@
 class Solution {
 public:
-    int MAX = 1000001;
+    bool isValid(int x, int y,int m,int n){
+        return (x >= 0 && y >= 0 && x < m && y < n);
+    }
     int maxDistance(vector<vector<int>>& grid) {
-        int n = size(grid) , m = size(grid[0]);
+        int m = size(grid) , n = size(grid[0]);
         
-        for(int i =0;i<m;i++){
+        queue<pair<int,int>> q;
+        
+        
+        for(int i = 0;i<m;i++){
             for(int j = 0;j<n;j++){
                 if(grid[i][j] == 1)
-                    continue;
-                
-                grid[i][j] = MAX;
-                if(i - 1 >= 0) grid[i][j] = min(grid[i][j] , grid[i-1][j] + 1);
-                if(j - 1 >= 0) grid[i][j] = min(grid[i][j] , grid[i][j-1] + 1);
+                    q.push({i,j});
             }
         }
         
+        if(q.size() == n*m) 
+            return -1;
         
-        int res = 0;
-        for(int i = m-1;i>=0;i--){
-            for(int j = n-1;j>=0;j--){
-                if(grid[i][j] == 1)
-                    continue;
+        int dist = 0;
+        int dx[] = {1,0,-1,0};
+        int dy[] = {0,1,0,-1};
+        
+        while(!q.empty()){
+            int size = q.size();
+            dist++;
+            
+            while(size--){
+                auto [x, y] = q.front();
+                q.pop();
                 
-                if(i + 1 < m) grid[i][j] = min(grid[i][j] , grid[i+1][j] + 1);
-                if(j + 1 < n) grid[i][j] = min(grid[i][j] , grid[i][j+1] + 1);
-                
-                res = max(res, grid[i][j]);
+                for(int i = 0;i<4;i++){
+                    int xx = x + dx[i];
+                    int yy = y + dy[i];
+                    
+                    if(isValid(xx,yy,m,n) && grid[xx][yy] == 0){
+                        q.push({xx,yy});
+                        grid[xx][yy] = 1;
+                    }
+                }
             }
         }
         
-        return (res == MAX) ? -1 : res - 1;
+        return dist - 1;
     }
 };
