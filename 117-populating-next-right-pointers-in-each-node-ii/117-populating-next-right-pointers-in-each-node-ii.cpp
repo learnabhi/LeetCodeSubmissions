@@ -19,28 +19,37 @@ public:
 class Solution {
 public:
     Node* connect(Node* root) {
-        if(!root) return root;
+        if(!root) return NULL;
         
-        queue<Node*> q;
-        q.push(root);
+        Node* currLevelNode = root;
+        Node* headNextLevel = NULL , *prevNextLevel = NULL;
         
-        while(!q.empty()){
-            int size = q.size();
-            for(int i = 0;i<size;i++){
-                Node* toModify = q.front();q.pop();
+        while(currLevelNode){
+            while(currLevelNode){
+                // left child
+                if(currLevelNode->left){
+                    if(prevNextLevel)
+                        prevNextLevel->next = currLevelNode->left;
+                    else
+                        headNextLevel = currLevelNode->left;
                 
-                if(i == size - 1){
-                    toModify->next = NULL;
-                }else{
-                    Node* nextNode = q.front();    
-                    toModify->next = nextNode;
+                    prevNextLevel = currLevelNode->left;
+                }
+                // right child
+                if(currLevelNode->right){
+                    if(prevNextLevel)
+                        prevNextLevel->next = currLevelNode->right;
+                    else
+                        headNextLevel = currLevelNode->right;
+                    
+                    prevNextLevel = currLevelNode->right;
                 }
                 
-                if(toModify->left)
-                    q.push(toModify->left);
-                if(toModify->right)
-                    q.push(toModify->right);
+                currLevelNode = currLevelNode->next;
             }
+            currLevelNode = headNextLevel;
+            headNextLevel = NULL ;
+            prevNextLevel = NULL;
         }
         
         return root;
