@@ -1,18 +1,19 @@
 class Solution {
 public:
+    int dir[4][2] = {{1,0} , {0,1} , {-1,0} , {0,-1}};
     bool isValid(int i, int j, int n){
         return (i >= 0 && i < n && j >= 0 && j < n );
     }
     void dfs(int i, int j, int n, vector<vector<int>>& grid){
-        if(!isValid(i,j,n) || grid[i][j] != 1) 
-            return ;
-        
         grid[i][j] = 2;
         
-        dfs(i+1,j,n,grid);
-        dfs(i-1,j,n,grid);
-        dfs(i,j+1,n,grid);
-        dfs(i,j-1,n,grid);
+        for(int k = 0;k<4;k++){
+            int x = i + dir[k][0];
+            int y = j + dir[k][1];
+            if(isValid(x,y,n) && grid[x][y] == 1){
+                dfs(x,y,n,grid);
+            }
+        }
     }
     int shortestBridge(vector<vector<int>>& grid) {
         int n = size(grid);
@@ -27,21 +28,13 @@ public:
                     firstGroup = true;
                 }
                 if(firstGroup && grid[i][j] == 1){
-                    // cout<<i<<" "<<j<<endl;
                     q.push({i,j});
                 }
             }
         }
         
-        // for(int i = 0;i<n;i++){
-        //     for(int j = 0;j<n;j++){
-        //         cout<<grid[i][j]<<" ";
-        //     }
-        //     cout<<endl;
-        // }
-        // cout<<q.size()<<endl;
+      
         int steps = 0;
-        int dir[4][2] = {{1,0} , {0,1} , {-1,0} , {0,-1}};
         
         while(!q.empty()){
             int size = q.size();
