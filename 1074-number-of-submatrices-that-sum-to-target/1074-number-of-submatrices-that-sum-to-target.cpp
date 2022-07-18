@@ -9,19 +9,20 @@ public:
             }
         }
         int res = 0;
+        unordered_map<int,int> mapka;
+        
         for(int colStart = 0;colStart < n ; colStart++){
             for(int colEnd = colStart ; colEnd < n ; colEnd++){
-                for(int rowStart = 0 ;rowStart < m ; rowStart++){
-                int sum = 0;
-                for(int rowEnd = rowStart ; rowEnd < m; rowEnd++){
-                    sum += matrix[rowEnd][colEnd] - (colStart ? matrix[rowEnd][colStart - 1] : 0);
-                    if(sum == target)
-                        res++;
-                }
-                    
+                    int currSum = 0;
+                    mapka = {{0,1}};
+                    for(int row = 0 ;row < m ;row++){
+                        currSum += matrix[row][colEnd] - (colStart ? matrix[row][colStart - 1] : 0);
+                        res += mapka[currSum - target];
+                        mapka[currSum]++;
+                    }
                 }
             }
-        }
+        
         
         return res;
     }
