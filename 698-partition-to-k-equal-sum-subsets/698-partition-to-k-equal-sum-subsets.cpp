@@ -5,7 +5,6 @@ private:
         if(i == nums.size()) return false;
         if(sum == req_sum) return solve(0,nums,k-1,0,req_sum,vis);
         
-        bool op1 = false;
         
         if(!vis[i] and sum + nums[i] <= req_sum){
             vis[i] = true;
