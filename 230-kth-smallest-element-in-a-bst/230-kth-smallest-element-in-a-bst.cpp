@@ -16,7 +16,7 @@ public:
         
         stack<TreeNode*> st;
         TreeNode* curr = root;
-        int count = 0, ans;
+        int ans = -1;
         while(curr || !st.empty()){
             while(curr){
                 st.push(curr);
@@ -25,9 +25,9 @@ public:
             curr = st.top();
             st.pop();
             
-            count++;
+           k--;
             
-            if(count == k)
+            if(k == 0)
             {
                 ans = curr->val;
                 break;
