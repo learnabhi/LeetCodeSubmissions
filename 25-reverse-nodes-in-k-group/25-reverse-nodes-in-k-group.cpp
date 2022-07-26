@@ -10,6 +10,14 @@
  */
 class Solution {
 public:
+    bool checkLessThanK(ListNode* head, int k){
+        ListNode* curr = head;
+        for(int i = 0;i<k;i++){
+            if(!curr) return true;
+            curr = curr->next;
+        }
+        return false;
+    }
     ListNode* reverseKGroup(ListNode* head, int k) {
         ListNode* dummy = new ListNode();
         dummy->next = head;
@@ -18,22 +26,15 @@ public:
         ListNode* after = head;
         
         
-        ListNode* prev = NULL;
-        ListNode* curr = NULL;
-        ListNode* next = NULL;
-        
         while(after){
-            ListNode* cursor = after;
-            for(int i = 0;i<k;i++){
-                if(!cursor) return dummy->next;
-                cursor = cursor->next;
-            }
+            if(checkLessThanK(after,k))
+                return dummy->next;
             
-            curr = after;
-            prev = dummy;
+            ListNode* curr = after;
+            ListNode* prev = before;
             
             for(int i = 0;i<k;i++){
-                next = curr->next;
+                ListNode* next = curr->next;
                 curr->next = prev;
                 prev = curr;
                 curr = next;
