@@ -13,14 +13,18 @@ public:
     ListNode* swapPairs(ListNode* head) {
         if(!head || !head->next) return head;
         
-        // we can solve it using recursion
+        ListNode* dummyNode = new ListNode();
+        ListNode* prev = dummyNode, *curr = head;
         
-        // before swapping, we need to modify the next pair of nodes
+        while(curr && curr->next){
+            prev->next = curr->next;
+            curr->next = prev->next->next;
+            prev->next->next = curr;
+            
+            prev = curr;
+            curr = curr->next;
+        }
         
-        ListNode* newHead = head->next;
-        head->next = swapPairs(newHead->next);
-        newHead->next = head;
-        
-        return newHead;
+        return dummyNode->next;
     }
 };
